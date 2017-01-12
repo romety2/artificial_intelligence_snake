@@ -40,20 +40,20 @@ public class MainController implements Initializable
     @FXML Button loadInput;
     @FXML Button openDir;
 
-    GameModel model = new GameModel();
-    int fps = 18;
+    GameModel gm = new GameModel();
+    int fps = 10;
     Timeline timeline;
     Timeline monitor = new Timeline();
     int lastScore = 0;
     int score = 0;
     String currentPlayer = "Gra";
-    NNGenetics trainer = new NNGenetics();
-    NeuralNetwork loaded = new NeuralNetwork();
+    NNGenetics nng = new NNGenetics();
+    NeuralNetwork nn = new NeuralNetwork();
 
     public void initialize(URL location, ResourceBundle resources)
     {
         initChoiceBoxes();
-        model.setWalls(true);
+        gm.setWalls(true);
         for (int i = 0; i < GameModel.SIDE; i++)
         {
             for (int j = 0; j < GameModel.SIDE; j++)
@@ -71,21 +71,21 @@ public class MainController implements Initializable
     {
         score = 0;
         clear();
-        HashMap<Location, State> start = model.start();
+        HashMap<Location, State> start = gm.start();
         for (Location add : start.keySet())
             addToBoard(add, start.get(add));
     }
 
     public void loadUpdate()
     {
-        HashMap<Location, State> updated = model.update();
+        HashMap<Location, State> updated = gm.update();
         if(updated == null)
         {
             lastScore = 0;
             buttonPlay.setText("Nowa gra");
             buttonPlay.setPrefWidth(100);
             timeline.stop();
-            trainer.updateFitnessOfCurrent(score);
+            nng.updateFitnessOfCurrent(score);
             if(currentPlayer.equals("Trening"))
             {
                 monitor.stop();
@@ -102,17 +102,20 @@ public class MainController implements Initializable
             return;
         Direction[] directions = new Direction[] {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
         Direction bestDirection = Direction.UP;
-        NeuralNetwork decider = currentPlayer.equals("Trening") ? trainer.getCurrent() : loaded;
+        NeuralNetwork decider = currentPlayer.equals("Trening") ? nng.getCurrent() : nn;
         double bestEval = -10;
-        for (Direction direction : directions) {
-            if(direction.isOpposite(model.getDirection()))
+        for (Direction direction : directions)
+        {
+            if(direction.isOpposite(gm.getDirection()))
                 continue;
-            Location present = model.getSnake().getLocation();
+            Location present = gm.getSnake().getLocation();
             double front = -2;
             Location inFront = null;
-            try {
-                inFront = new Location(present.getX() + direction.getX(), present.getY() + direction.getY(), true);
-            } catch (LossException e) {
+            try
+            {
+                inFront = new Location(present.getX() + direction.getX(), present.getY() + direction.getY());
+            } catch (LossException e)
+            {
                 front = -1;
             }
             if(front == -2)
@@ -122,28 +125,30 @@ public class MainController implements Initializable
             Location toLeft = null;
             try
             {
-                toLeft = new Location(present.getX() + relativeLeft.getX(), present.getY() + relativeLeft.getY(), true);
+                toLeft = new Location(present.getX() + relativeLeft.getX(), present.getY() + relativeLeft.getY());
             } catch (LossException e)
             {
                 left = -1;
             }
             if(left == -2)
                 left = stateToDouble(updated.get(toLeft));
-            if(direction.equals(Direction.getRelativeLeft(model.getDirection())) && !model.getSnake().getTail().isEmpty())
+            if(direction.equals(Direction.getRelativeLeft(gm.getDirection())) && !gm.getSnake().getTail().isEmpty())
                 left = 0;
             Direction relativeRight = Direction.getRelativeRight(direction);
             double right = -2;
             Location toRight = null;
-            try {
-                toRight = new Location(present.getX() + relativeRight.getX(), present.getY() + relativeRight.getY(), true);
-            } catch (LossException e) {
+            try
+            {
+                toRight = new Location(present.getX() + relativeRight.getX(), present.getY() + relativeRight.getY());
+            } catch (LossException e)
+            {
                 right = -1;
             }
             if(right == -2)
                 right = stateToDouble(updated.get(toRight));
-            if(direction.equals(Direction.getRelativeRight(model.getDirection())) && !model.getSnake().getTail().isEmpty())
+            if(direction.equals(Direction.getRelativeRight(gm.getDirection())) && !gm.getSnake().getTail().isEmpty())
                 right = 0;
-            double delta = Math.sqrt(Math.pow(present.getX() - model.getFood().getX(), 2) + Math.pow(present.getY() - model.getFood().getY(), 2)) - Math.sqrt(Math.pow(present.getX() + direction.getX() - model.getFood().getX(), 2) + Math.pow(present.getY() + direction.getY() - model.getFood().getY(), 2));
+            double delta = Math.sqrt(Math.pow(present.getX() - gm.getFood().getX(), 2) + Math.pow(present.getY() - gm.getFood().getY(), 2)) - Math.sqrt(Math.pow(present.getX() + direction.getX() - gm.getFood().getX(), 2) + Math.pow(present.getY() + direction.getY() - gm.getFood().getY(), 2));
             double eval = decider.calcOutput(new double[] {delta, left, front, right});
             if(eval > bestEval)
             {
@@ -152,14 +157,15 @@ public class MainController implements Initializable
             }
             decider.reset();
         }
-        model.setPendingDirection(bestDirection);
+        gm.setPendingDirection(bestDirection);
     }
 
     private double stateToDouble(State state)
     {
         if(state == null)
             return 0;
-        switch (state) {
+        switch (state)
+        {
             case FOOD:
                 return 1;
             case TAIL:
@@ -201,20 +207,21 @@ public class MainController implements Initializable
     {
         if(buttonPlay.getText().equals("Start"))
         {
-            model.setPendingDirection(Direction.RIGHT);
+            gm.setPendingDirection(Direction.RIGHT);
             buttonPlay.getScene().setOnKeyPressed(event1 ->
             {
-                if(!currentPlayer.equals("Gra"))
-                    return;
-                KeyCode code = event1.getCode();
-                if ((code.equals(KeyCode.UP) || code.equals(KeyCode.W)))
-                    model.setPendingDirection(Direction.UP);
-                else if ((code.equals(KeyCode.DOWN) || code.equals(KeyCode.S)))
-                    model.setPendingDirection(Direction.DOWN);
-                else if ((code.equals(KeyCode.LEFT) || code.equals(KeyCode.A)))
-                    model.setPendingDirection(Direction.LEFT);
-                else if ((code.equals(KeyCode.RIGHT) || code.equals(KeyCode.D)))
-                    model.setPendingDirection(Direction.RIGHT);
+                if(currentPlayer.equals("Gra"))
+                {
+                    KeyCode code = event1.getCode();
+                    if ((code.equals(KeyCode.UP) || code.equals(KeyCode.W)))
+                        gm.setPendingDirection(Direction.UP);
+                    else if ((code.equals(KeyCode.DOWN) || code.equals(KeyCode.S)))
+                        gm.setPendingDirection(Direction.DOWN);
+                    else if ((code.equals(KeyCode.LEFT) || code.equals(KeyCode.A)))
+                        gm.setPendingDirection(Direction.LEFT);
+                    else if ((code.equals(KeyCode.RIGHT) || code.equals(KeyCode.D)))
+                        gm.setPendingDirection(Direction.RIGHT);
+                }
             });
             buttonPlay.getScene().setOnMouseClicked(event ->
             {
@@ -228,7 +235,8 @@ public class MainController implements Initializable
         {
             loadStart();
             timeline.play();
-            model.setPendingDirection(Direction.RIGHT);
+            gm.setPendingDirection(Direction.UP);
+            gm.setPendingDirection(Direction.RIGHT);
             if(currentPlayer.equals("Trening"))
                 monitor.play();
         }
@@ -240,13 +248,13 @@ public class MainController implements Initializable
         NeuralNetwork network;
         try
         {
-            network = new NeuralNetwork(trainer.stringToList(input.getText()));
+            network = new NeuralNetwork(nng.stringToList(input.getText()));
         }
         catch(IndexOutOfBoundsException | NumberFormatException e)
         {
             return;
         }
-        loaded = network;
+        nn = network;
         players.getSelectionModel().select(2);
     }
 
@@ -255,10 +263,10 @@ public class MainController implements Initializable
     {
         try
         {
-            Desktop.getDesktop().open(trainer.getStorePopulation().getParentFile());
-        } catch (IOException e)
+            Desktop.getDesktop().open(nng.getStorePopulation().getParentFile());
+        }
+        catch (IOException e)
         {
-            e.printStackTrace();
         }
     }
 
@@ -295,7 +303,7 @@ public class MainController implements Initializable
         {
             if(lastScore >= score)
             {
-                trainer.updateFitnessOfCurrent(score);
+                nng.updateFitnessOfCurrent(score);
                 loadStart();
             }
             lastScore = score;

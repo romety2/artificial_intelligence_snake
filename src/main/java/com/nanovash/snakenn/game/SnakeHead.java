@@ -19,7 +19,7 @@ public class SnakeHead {
     private @Getter List<Location> tail = new ArrayList<>();
 
     public HashMap<Location, State> move(GameModel model, HashMap<Location, State> locations) throws LossException {
-        Location futureHeadLocation = new Location(location.getX() + model.getDirection().getX(), this.location.getY() + model.getDirection().getY(), model.isWalls());
+        Location futureHeadLocation = new Location(location.getX() + model.getDirection().getX(), this.location.getY() + model.getDirection().getY());
         Location growLocation = tail.isEmpty() ? location : tail.get(tail.size() - 1);
         boolean grow = false;
         if(model.getFood().equals(futureHeadLocation))

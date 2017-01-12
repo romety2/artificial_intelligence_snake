@@ -30,7 +30,7 @@ public class GameModel
         HashMap<Location, State> locations = new HashMap<>();
         try
         {
-            snake = new SnakeHead(new Location(2, 2, walls));
+            snake = new SnakeHead(new Location(2, 2));
         }
         catch (LossException le)
         {
@@ -74,7 +74,7 @@ public class GameModel
                 Location l = null;
                 try
                 {
-                    l = new Location(i, j, walls);
+                    l = new Location(i, j);
                 }
                 catch (LossException ignored)
                 {

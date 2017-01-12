@@ -25,7 +25,8 @@ public enum Direction
 
     public static Direction getRelativeLeft(Direction d)
     {
-        switch (d) {
+        switch (d)
+        {
             case UP:
                 return LEFT;
             case LEFT:
@@ -40,7 +41,8 @@ public enum Direction
 
     public static Direction getRelativeRight(Direction d)
     {
-        switch (d) {
+        switch (d)
+        {
             case UP:
                 return RIGHT;
             case RIGHT:
