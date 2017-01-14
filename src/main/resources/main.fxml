@@ -59,7 +59,7 @@
                   <Insets left="10.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="openDir" focusTraversable="false" mnemonicParsing="false" onAction="#openDir" prefWidth="130.0" text="Otwórz folder">
+            <Button fx:id="openFolder" focusTraversable="false" mnemonicParsing="false" onAction="#openFolder" prefWidth="130.0" text="Otwórz folder">
                <font>
                   <Font size="15.0" />
                </font>

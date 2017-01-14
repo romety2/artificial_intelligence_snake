@@ -15,8 +15,8 @@ public class NNGenetics
     private @Getter File storeBest;
     private Random rng = new Random();
 
-    private final int populationSize = 20;
-    private double mutRate = 0.2;
+    private final int populationSize = 100;
+    private double mutRate = 0.1;
 
     public NNGenetics() {
         try
@@ -136,9 +136,7 @@ public class NNGenetics
         int x1 = rng.nextInt(first.size());
         int x2;
         do
-        {
             x2 = rng.nextInt(first.size() + 1);
-        }
         while(x1 >= x2);
         children.add(crossover(first, second, x1, x2));
         children.add(crossover(second, first, x1, x2));

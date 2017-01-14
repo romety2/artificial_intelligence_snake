@@ -38,11 +38,11 @@ public class MainController implements Initializable
     @FXML ChoiceBox players;
     @FXML TextField input;
     @FXML Button loadInput;
-    @FXML Button openDir;
+    @FXML Button openFolder;
 
     GameModel gm = new GameModel();
-    int fps = 10;
-    Timeline timeline;
+    int speed = 10;
+    Timeline tl;
     Timeline monitor = new Timeline();
     int lastScore = 0;
     int score = 0;
@@ -84,7 +84,7 @@ public class MainController implements Initializable
             lastScore = 0;
             buttonPlay.setText("Nowa gra");
             buttonPlay.setPrefWidth(100);
-            timeline.stop();
+            tl.stop();
             nng.updateFitnessOfCurrent(score);
             if(currentPlayer.equals("Trening"))
             {
@@ -177,7 +177,8 @@ public class MainController implements Initializable
     public void addToBoard(Location location, State state)
     {
         for (Node node : gridPaneBoard.getChildren())
-            if (GridPane.getColumnIndex(node) == location.getX() && GridPane.getRowIndex(node) == location.getY()) {
+            if (GridPane.getColumnIndex(node) == location.getX() && GridPane.getRowIndex(node) == location.getY())
+            {
                 Rectangle rectangle = ((Rectangle) node);
                 switch(state)
                 {
@@ -227,14 +228,14 @@ public class MainController implements Initializable
             {
                 gridPaneBoard.requestFocus();
             });
-            timeline.play();
+            tl.play();
             if(currentPlayer.equals("Trening"))
                 monitor.play();
         }
         else if(buttonPlay.getText().equals("Nowa gra"))
         {
             loadStart();
-            timeline.play();
+            tl.play();
             gm.setPendingDirection(Direction.UP);
             gm.setPendingDirection(Direction.RIGHT);
             if(currentPlayer.equals("Trening"))
@@ -245,21 +246,20 @@ public class MainController implements Initializable
     @FXML
     public void loadNetwork()
     {
-        NeuralNetwork network;
+        NeuralNetwork nn2;
         try
         {
-            network = new NeuralNetwork(nng.stringToList(input.getText()));
+            nn2 = new NeuralNetwork(nng.stringToList(input.getText()));
+            nn = nn2;
+            players.getSelectionModel().select(1);
         }
         catch(IndexOutOfBoundsException | NumberFormatException e)
         {
-            return;
         }
-        nn = network;
-        players.getSelectionModel().select(2);
-    }
+}
 
     @FXML
-    public void openDir()
+    public void openFolder()
     {
         try
         {
@@ -278,18 +278,18 @@ public class MainController implements Initializable
             switch (newValue.toString())
             {
                 case "Gra":
-                    fps = 10;
+                    speed = 10;
                     break;
                 case "Symulacja":
-                    fps = 10;
+                    speed = 10;
                     break;
                 case "Trening":
-                    fps = 100;
+                    speed = 100;
             }
-            if(timeline != null)
-                timeline.stop();
-            timeline = new Timeline(new KeyFrame(Duration.millis(1000 / fps), ae -> loadUpdate()));
-            timeline.setCycleCount(Animation.INDEFINITE);
+            if(tl != null)
+                tl.stop();
+            tl = new Timeline(new KeyFrame(Duration.millis(1000 / speed), ae -> loadUpdate()));
+            tl.setCycleCount(Animation.INDEFINITE);
             currentPlayer = newValue.toString();
             initMonitor();
         });
@@ -299,7 +299,7 @@ public class MainController implements Initializable
     public void initMonitor()
     {
         monitor.stop();
-        monitor = new Timeline(new KeyFrame(Duration.millis(100000 / fps), ae ->
+        monitor = new Timeline(new KeyFrame(Duration.millis(100000 / speed), ae ->
         {
             if(lastScore >= score)
             {

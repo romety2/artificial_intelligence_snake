@@ -20,7 +20,8 @@ public class NeuralNetwork
         output.add(new Neuron(-2));
 
         List<Neuron> hidden = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             Neuron neuron = new Neuron(randomValue());
             neuron.addConnection(new Connection(output.get(0), randomValue()));
             hidden.add(neuron);
@@ -85,9 +86,11 @@ public class NeuralNetwork
                 neuralNetwork.get(i).get(j).setValue(0);
     }
 
-    public List<Double> toList() {
+    public List<Double> toList()
+    {
         List<Double> network = new ArrayList<>();
-        for (List<Neuron> layer : neuralNetwork) {
+        for (List<Neuron> layer : neuralNetwork)
+        {
             for (Neuron neuron : layer)
                 if(neuron.getThreshold() != -2)
                     network.add(neuron.getThreshold());
