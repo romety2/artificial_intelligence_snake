@@ -97,7 +97,7 @@ public class NNGenetics
         population.clear();
         for (List<Double> network : best)
             population.put(network, -1);
-        while(population.size() < 20) {
+        while(population.size() < populationSize) {
             List<Double> first = best.get(rng.nextInt(best.size()));
             List<Double> second;
             do
