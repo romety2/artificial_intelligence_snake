@@ -55,6 +55,10 @@ public class NNGenetics
         }
     }
 
+    /**
+     * Aktualizuje fitness aktualnie badanej sieci
+     * @param fitness wynik aktualnej sieci
+     */
     public void updateFitnessOfCurrent(int fitness)
     {
         population.put(current.toList(), fitness);
@@ -68,6 +72,9 @@ public class NNGenetics
             current = new NeuralNetwork(notReady.get(0));
     }
 
+    /**
+     * Wykonuje algorytm genetyczny na populacji i aktualizuje pliki programu
+     */
     private void updateGeneration()
     {
         List<Double> maxEntry = null;
@@ -130,6 +137,12 @@ public class NNGenetics
         current = new NeuralNetwork(new ArrayList<>(population.keySet()).get(0));
     }
 
+    /**
+    * Glowna funkcja zwracajaca 2 synow i 2 rodzicow
+    * @param first pierwszy rodzic
+    * @param second drugi rodzic
+    * @return Lista 2 sieci w formie List<Double>
+    */
     private List<List<Double>> breed(List<Double> first, List<Double> second)
     {
         List<List<Double>> children = new ArrayList<>();
@@ -143,6 +156,14 @@ public class NNGenetics
         return children;
     }
 
+    /**
+    * Aktualny proces krzyzowania
+    * @param first pierwszy rodzic
+    * @param second drugi rodzic
+    * @param x1 pierwsza wartosc odciecia
+    * @param x2 druga wartosc odciecia (musi byc wieksze od pierwszego)
+    * @return Syn obu rodzicow
+    */
     private List<Double> crossover(List<Double> first, List<Double> second, int x1, int x2)
     {
         List<Double> child = new ArrayList<>();
@@ -155,6 +176,10 @@ public class NNGenetics
         return child;
     }
 
+    /**
+     * Losowo modyfikuje 2 pola w sieci
+     * @param network siec do mutacji
+     */
     private void mutate(List<Double> network)
     {
         for (int i = 0; i < 2; i++)
@@ -164,6 +189,11 @@ public class NNGenetics
         }
     }
 
+    /**
+     * Konwertuje siec neuronowa z listy na stringa
+     * @param network siec do konwersji
+     * @return siec w formie stringa
+     */
     public String listToString(List<Double> network) {
         StringBuilder builder = new StringBuilder();
         for (Double s : network)
@@ -171,6 +201,11 @@ public class NNGenetics
         return builder.toString();
     }
 
+    /**
+     * Konwertuje siec neuronowa ze stringa na liste
+     * @param network siec do konwersji
+     * @return siec w formie listy
+     */
     public List<Double> stringToList(String network)
     {
         List<Double> net = new ArrayList<>();

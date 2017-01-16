@@ -13,6 +13,9 @@ public class NeuralNetwork
     private @Getter List<List<Neuron>> neuralNetwork = new ArrayList<>();
     private @Getter long id;
 
+    /**
+     * Tworzy losowa siec neuronowa
+     */
     public NeuralNetwork()
     {
         id = System.currentTimeMillis();
@@ -40,6 +43,11 @@ public class NeuralNetwork
         neuralNetwork.add(output);
     }
 
+    /**
+     * Tworzy siec neuronowa w oparciu o List<Double>
+     * @param network siec w formie listy List<Double>
+     * @throws IndexOutOfBoundsException
+     */
     public NeuralNetwork(List<Double> network) throws IndexOutOfBoundsException
     {
         id = System.currentTimeMillis();
@@ -66,6 +74,11 @@ public class NeuralNetwork
         neuralNetwork.add(output);
     }
 
+    /**
+     * Oblicza wyjscie sieci neuronowej w oparciu o wejscie
+     * @param input pola wejscia
+     * @return wyjscie sieci
+     */
     public double calcOutput(double[] input)
     {
         for (int i = 0; i < neuralNetwork.size(); i++)
@@ -79,6 +92,9 @@ public class NeuralNetwork
         return neuralNetwork.get(neuralNetwork.size() - 1).get(0).getValue();
     }
 
+    /**
+     * Resetuje siec neuronowa, inaczej neurony zachowalyby swoje wartosci
+     */
     public void reset()
     {
         for (int i = 0; i < neuralNetwork.size(); i++)
@@ -86,6 +102,10 @@ public class NeuralNetwork
                 neuralNetwork.get(i).get(j).setValue(0);
     }
 
+    /**
+     * Konwertuje siec neuronowa z formy instancji do List<Double> dla algorytmu genetycznego
+     * @return siec w formie listy
+     */
     public List<Double> toList()
     {
         List<Double> network = new ArrayList<>();
@@ -101,6 +121,10 @@ public class NeuralNetwork
         return network;
     }
 
+    /**
+     * Randomizer dla pol sieci takich jak wagi
+     * @return losowy double pomiedzy -1 a 1
+     */
     public static double randomValue()
     {
         return new Random().nextDouble() * 2 - 1;

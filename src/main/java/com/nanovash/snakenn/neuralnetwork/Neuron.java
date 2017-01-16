@@ -17,6 +17,9 @@ public class Neuron
     private @Getter @Setter double value = 0;
     private @NonNull @Getter @Setter double threshold;
 
+    /**
+     * Przekacuje wartosc sieci do podlaczonych neuronow jesli wartosc jest wieksza niz prog
+     */
     public void passValues() {
         if(value > threshold)
             for (Connection conn : connections)
