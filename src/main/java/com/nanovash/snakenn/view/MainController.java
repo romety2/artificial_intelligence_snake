@@ -50,6 +50,9 @@ public class MainController implements Initializable
     NNGenetics nng = new NNGenetics();
     NeuralNetwork nn = new NeuralNetwork();
 
+    /**
+     * Wczytuje plansze i user interface
+     */
     public void initialize(URL location, ResourceBundle resources)
     {
         initChoiceBoxes();
@@ -67,6 +70,9 @@ public class MainController implements Initializable
         loadStart();
     }
 
+    /**
+     * Wola GameModel.start() i rysuje zwrocona HashMap
+     */
     public void loadStart()
     {
         score = 0;
@@ -76,6 +82,10 @@ public class MainController implements Initializable
             addToBoard(add, start.get(add));
     }
 
+    /**
+     * Wola GameModel.update() i rysuje zwrocona HashMap, w przypadku gdy gracz
+     * jest siecia neuronowa sprawdza ocene kazdego ruchu i uzywa najwyzej ocenianego
+     */
     public void loadUpdate()
     {
         HashMap<Location, State> updated = gm.update();
@@ -98,8 +108,10 @@ public class MainController implements Initializable
         for (Location l : updated.keySet())
             addToBoard(l, updated.get(l));
 
+        //Tutaj powinienes chyba dac "Czlowiek", bo reszta funkcji jest dla sieci neuronowej
         if(currentPlayer.equals("Gra"))
             return;
+        //Ocenia kazdy mozliwy ruch i wybiera najlepszy wedlug sieci neuronowej
         Direction[] directions = new Direction[] {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
         Direction bestDirection = Direction.UP;
         NeuralNetwork decider = currentPlayer.equals("Trening") ? nng.getCurrent() : nn;
@@ -160,6 +172,11 @@ public class MainController implements Initializable
         gm.setPendingDirection(bestDirection);
     }
 
+    /**
+     * Konwertuje stan do double
+     * @param state Stan do konwersji
+     * @return 1, 0, lub -1
+     */
     private double stateToDouble(State state)
     {
         if(state == null)
@@ -174,6 +191,11 @@ public class MainController implements Initializable
         return 0;
     }
 
+    /**
+     * Znajduje prostokat w prawidlowej lokalizacji i rysuje w jego pozycji w zaleznosci od stanu
+     * @param location lokalizacja prostokata
+     * @param state stan wedle ktorego sie rysuje
+     */
     public void addToBoard(Location location, State state)
     {
         for (Node node : gridPaneBoard.getChildren())
@@ -197,12 +219,18 @@ public class MainController implements Initializable
             }
     }
 
+    /**
+      * Czysci plansze
+      */
     public void clear()
     {
         for (Node node : gridPaneBoard.getChildren())
             ((Rectangle) node).setFill(Color.WHITE);
     }
 
+    /**
+      * Obsluga klikniecia przycisku start
+      */
     @FXML
     public void buttonPressed()
     {
@@ -243,6 +271,9 @@ public class MainController implements Initializable
         }
     }
 
+    /**
+     * Wczytuje siec neuronowa dla typu gracza "Loaded Network"
+     */
     @FXML
     public void loadNetwork()
     {
@@ -258,6 +289,9 @@ public class MainController implements Initializable
         }
 }
 
+  /**
+   * Otwiera folder Appdata programu
+   */
     @FXML
     public void openFolder()
     {
@@ -270,6 +304,9 @@ public class MainController implements Initializable
         }
     }
 
+    /**
+     * Inicjalizuje okienka wyboru
+     */
     public void initChoiceBoxes()
     {
         players.getItems().addAll("Gra", "Symulacja", "Trening");
@@ -296,6 +333,9 @@ public class MainController implements Initializable
         players.getSelectionModel().select(0);
     }
 
+    /**
+     * Inicjalizuje monitorowanie sieci neuronowej w celu jej zatrzymania jesli utknie w petli
+     */
     public void initMonitor()
     {
         monitor.stop();

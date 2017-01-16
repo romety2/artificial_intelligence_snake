@@ -24,6 +24,9 @@ public class GameModel
 
     Random random = new Random();
 
+    /**
+     * Umieszcza weza na srodku i losowo tworzy jedzenie
+     */
     public HashMap<Location, State> start()
     {
         lost = false;
@@ -41,6 +44,9 @@ public class GameModel
         return locations;
     }
 
+    /**
+     * Porusza weza i zwraca zaktualizowany ruch
+     */
     public HashMap<Location, State> update()
     {
         HashMap<Location, State> locations = new HashMap<>();
@@ -57,12 +63,19 @@ public class GameModel
         return locations;
     }
 
+    /**
+     * Przygotowuje kolejny kierunek, poniewaz waz nie moze isc do tylu
+     * @param d kierunek w ktorym waz ma sie poruszyc
+     */
     public void setPendingDirection(Direction d)
     {
         if(!direction.isOpposite(d))
             pendingDirection = d;
     }
 
+    /**
+     * Wybiera losowe miejsce i umieszcza tam jedzenie
+     */
     public void generateFood()
     {
         List<Location> locations = new ArrayList<>();
