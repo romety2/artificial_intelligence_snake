@@ -138,7 +138,7 @@ public class NNGenetics
     }
 
     /**
-    * Glowna funkcja zwracajaca 2 synów i 2 rodziców
+    * G³ówna funkcja zwracajaca 2 synów i 2 rodziców
     * @param first pierwszy rodzic
     * @param second drugi rodzic
     * @return Lista 2 sieci w formie List<Double>
@@ -178,7 +178,7 @@ public class NNGenetics
 
     /**
      * Losowo modyfikuje 2 pola w sieci
-     * @param network siec do mutacji
+     * @param network sieæ do mutacji
      */
     private void mutate(List<Double> network)
     {
@@ -190,9 +190,9 @@ public class NNGenetics
     }
 
     /**
-     * Konwertuje siec neuronowa z listy na stringa
-     * @param network siec do konwersji
-     * @return siec w formie stringa
+     * Konwertuje sieæ neuronow¹ z listy na stringa
+     * @param network sieæ do konwersji
+     * @return sieæ w formie stringa
      */
     public String listToString(List<Double> network) {
         StringBuilder builder = new StringBuilder();
@@ -203,8 +203,8 @@ public class NNGenetics
 
     /**
      * Konwertuje siec neuronowa ze stringa na liste
-     * @param network siec do konwersji
-     * @return siec w formie listy
+     * @param network sieæ do konwersji
+     * @return sieæ w formie listy
      */
     public List<Double> stringToList(String network)
     {
