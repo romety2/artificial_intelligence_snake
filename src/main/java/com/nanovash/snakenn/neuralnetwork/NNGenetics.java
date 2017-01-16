@@ -138,7 +138,7 @@ public class NNGenetics
     }
 
     /**
-    * Glowna funkcja zwracajaca 2 synow i 2 rodzicow
+    * Glowna funkcja zwracajaca 2 synów i 2 rodziców
     * @param first pierwszy rodzic
     * @param second drugi rodzic
     * @return Lista 2 sieci w formie List<Double>
@@ -160,9 +160,9 @@ public class NNGenetics
     * Aktualny proces krzyzowania
     * @param first pierwszy rodzic
     * @param second drugi rodzic
-    * @param x1 pierwsza wartosc odciecia
-    * @param x2 druga wartosc odciecia (musi byc wieksze od pierwszego)
-    * @return Syn obu rodzicow
+    * @param x1 pierwsza wartoœæ odciecia
+    * @param x2 druga wartoœæ odciecia (musi byc wieksze od pierwszego)
+    * @return Syn obu rodziców
     */
     private List<Double> crossover(List<Double> first, List<Double> second, int x1, int x2)
     {

@@ -14,7 +14,7 @@ public class NeuralNetwork
     private @Getter long id;
 
     /**
-     * Tworzy losowa siec neuronowa
+     * Tworzy losowa sieœ neuronowa
      */
     public NeuralNetwork()
     {
@@ -44,7 +44,7 @@ public class NeuralNetwork
     }
 
     /**
-     * Tworzy siec neuronowa w oparciu o List<Double>
+     * Tworzy sieæ neuronow¹ w oparciu o List<Double>
      * @param network siec w formie listy List<Double>
      * @throws IndexOutOfBoundsException
      */
@@ -75,9 +75,9 @@ public class NeuralNetwork
     }
 
     /**
-     * Oblicza wyjscie sieci neuronowej w oparciu o wejscie
+     * Oblicza wyjœcie sieci neuronowej w oparciu o wejœcie
      * @param input pola wejscia
-     * @return wyjscie sieci
+     * @return wyjœcie sieci
      */
     public double calcOutput(double[] input)
     {
@@ -93,7 +93,7 @@ public class NeuralNetwork
     }
 
     /**
-     * Resetuje siec neuronowa, inaczej neurony zachowalyby swoje wartosci
+     * Resetuje sieæ neuronow¹, inaczej neurony zachowalyby swoje wartoœci
      */
     public void reset()
     {
@@ -103,8 +103,8 @@ public class NeuralNetwork
     }
 
     /**
-     * Konwertuje siec neuronowa z formy instancji do List<Double> dla algorytmu genetycznego
-     * @return siec w formie listy
+     * Konwertuje sieæ neuronowa z formy instancji do List<Double> dla algorytmu genetycznego
+     * @return sieæ w formie listy
      */
     public List<Double> toList()
     {
